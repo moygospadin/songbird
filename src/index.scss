@@ -12,10 +12,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-.top-items{
+.top-items {
   display: flex;
   justify-content: space-between;
-  padding:  0 10px;
+  padding: 0 10px;
 }
 .menu {
   display: flex;
@@ -36,17 +36,90 @@ code {
   font-size: 18px;
   font-weight: 500;
 }
-.score{
+.score {
   align-self: center;
   font-size: 18px;
   font-weight: 500;
 }
-.game-board{
+.game-board {
   list-style-type: none;
+}
+.not-active{
+  color: red;
+}
+audio{
+  outline:none !important;
 }
 .active {
   z-index: 3;
   color: #fff;
   background-color: #00efb2 !important;
   border-color: transparent;
+}
+.birds-player {
+  display: flex;
+  flex-wrap: wrap;
+  img{
+    width: 200px;
+    height: 155px;
+  }
+}
+.bird-list {
+  border: 1px solid black;
+  width: 45%;
+  list-style-type: none;
+  
+}
+.bird-list li{
+  margin: 10px;
+}
+.bird-list li span{
+  cursor: pointer;
+}
+.bird-name{
+  margin-right: 10px;
+  color:red;
+}
+.bird-selected {
+  border: 1px solid black;
+  width: 45%;
+}
+.next-lvl-btn {
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+.bird-info {
+  margin: 10px auto;
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  flex-wrap: wrap;
+  .bird-list, .bird-selected{
+    min-width: 250px;
+  }
+  
+}
+.controls {
+  display: flex;
+}
+.playback-button svg {
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
+  width: 18px;
+  height: 18px;
+  color: #54b1c1;
+}
+.playback-button {
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
+  width: 40px;
+  height: 40px;
+  border: 2px solid #00bc8c;
+  justify-content: center;
+  border-radius: 50%;
+  margin-right: 20px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  outline: none;
 }
