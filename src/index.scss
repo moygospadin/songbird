@@ -1,3 +1,11 @@
+$rhap_theme-color: #00bc8c !default;
+$rhap_background-color: #303030;
+$rhap_bar-color: #666 !default;
+$rhap_time-color: white !default;
+$rhap_font-family: bold !default;
+
+@import 'react-h5-audio-player/src/styles';
+
 * {
   margin: 0;
   padding: 0;
@@ -6,16 +14,21 @@
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  outline: none;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+body {
+  background-color: #222;
+}
 .top-items {
   display: flex;
   justify-content: space-between;
   padding: 0 10px;
+  color: white;
 }
 .menu {
   display: flex;
@@ -26,16 +39,17 @@ code {
   border-radius: 5px;
   overflow: hidden;
   list-style-type: none;
+  li {
+    flex: auto;
+    text-align: center;
+    background-color: #00bc8c;
+    border-color: #007c5d;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: 500;
+  }
 }
-.menu li {
-  flex: auto;
-  text-align: center;
-  background-color: #00bc8c;
-  border-color: #007c5d;
-  padding: 10px;
-  font-size: 18px;
-  font-weight: 500;
-}
+
 .score {
   align-self: center;
   font-size: 18px;
@@ -43,12 +57,14 @@ code {
 }
 .game-board {
   list-style-type: none;
+  background: #303030;
+  border-radius: 25px;
+  width: 80%;
+  margin: 0 auto;
 }
-.not-active{
-  color: red;
-}
-audio{
-  outline:none !important;
+
+audio {
+  outline: none !important;
 }
 .active {
   z-index: 3;
@@ -56,59 +72,102 @@ audio{
   background-color: #00efb2 !important;
   border-color: transparent;
 }
+.rhap_container {
+  box-shadow: none;
+}
+
 .birds-player {
   display: flex;
   flex-wrap: wrap;
-  img{
+  justify-content: flex-start;
+
+  img {
     width: 200px;
     height: 155px;
+    margin: 20px;
+    border-radius: 25px;
+    margin: 25px auto;
   }
+  .birds-player-controls {
+    width: 70%;
+    margin: 0 auto;
+    .name {
+      margin-top: 10px;
+      font-weight: bold;
+      color: white;
+    }
+  }
+}
+.message {
+  width: 80%;
+  background: #05e791;
+  position: absolute;
+  height: 300px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1312;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 25px;
+  font-size: 25px;
 }
 .bird-list {
   border: 1px solid black;
   width: 45%;
   list-style-type: none;
-  
+  height: 210px;
+  border-radius: 5px;
+  background-color: #303030;
+  li {
+    color: gray;
+    margin: 10px;
+    span {
+      cursor: pointer;
+      color: white;
+      font-weight: 600;
+    }
+  }
 }
-.bird-list li{
-  margin: 10px;
-}
-.bird-list li span{
-  cursor: pointer;
-}
-.bird-name{
+
+.bird-name {
   margin-right: 10px;
-  color:red;
+  color: red;
 }
 .bird-selected {
+  border-radius: 5px;
+  background-color: #303030;
   border: 1px solid black;
   width: 45%;
+  p,
+  span {
+    color: white;
+    font-weight: 600;
+    margin: 5px;
+  }
 }
-.next-lvl-btn {
-  position: relative;
-  left: 50%;
-  transform: translate(-50%, 0);
-}
+
 .bird-info {
   margin: 10px auto;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   width: 80%;
   flex-wrap: wrap;
-  .bird-list, .bird-selected{
+  .bird-list,
+  .bird-selected {
     min-width: 250px;
   }
-  
+  img {
+    width: 200px;
+    float: left;
+    margin-right: 10px;
+  }
 }
+
 .controls {
   display: flex;
-}
-.playback-button svg {
-  -webkit-transition: 0.2s;
-  transition: 0.2s;
-  width: 18px;
-  height: 18px;
-  color: #54b1c1;
 }
 .playback-button {
   -webkit-transition: 0.2s;
@@ -122,4 +181,99 @@ audio{
   margin-bottom: 12px;
   cursor: pointer;
   outline: none;
+  svg {
+    -webkit-transition: 0.2s;
+    transition: 0.2s;
+    width: 18px;
+    height: 18px;
+    color: #54b1c1;
+  }
+}
+.true {
+  background-color: green !important;
+}
+.false {
+  background-color: red !important;
+}
+.li-btn {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 15px;
+  border-radius: 50%;
+  -webkit-transition: 0.1s;
+  transition: 0.1s;
+  background-color: #444;
+}
+@media screen and (max-width: 833px) {
+  .birds-player-controls .name {
+    text-align: center;
+  }
+}
+@media screen and (max-width: 646px) {
+  .bird-selected ,.bird-list {
+    margin-top: 20px;
+    width: 100%;
+  }
+}
+.next-lvl-btn {
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0);
+  font-size: 100%;
+  font-weight: 700;
+  color: #fff !important;
+  text-shadow: #053852 -1px 1px, #053852 1px 1px, #053852 1px -1px,
+    #053852 -1px -1px;
+  text-decoration: none;
+  user-select: none;
+  padding: 0.3em 0.7em;
+  outline: none;
+  border-radius: 7px;
+  background-color: green;
+  transition: background 0.3s;
+}
+
+.not-active {
+  position: relative;
+  display: inline-block;
+  font-size: 100%;
+  font-weight: 700;
+  color: #fff !important;
+  text-shadow: #053852 -1px 1px, #053852 1px 1px, #053852 1px -1px,
+    #053852 -1px -1px;
+  text-decoration: none;
+  user-select: none;
+  padding: 0.3em 0.7em;
+  outline: none;
+  border-radius: 7px;
+  background: #053852
+    repeating-linear-gradient(
+      135deg,
+      #053852,
+      #053852 10px,
+      #1679ad 10px,
+      #1679ad 20px,
+      #053852 20px
+    );
+  box-shadow: inset -2px -2px rgba(0, 0, 0, 0.3),
+    inset 2px 2px rgba(255, 255, 255, 0.3);
+  cursor: not-allowed;
+  transition: background 0.3s;
+}
+.not-active:hover {
+  text-shadow: #0175b1 -1px 1px, #0175b1 1px 1px, #0175b1 1px -1px,
+    #0175b1 -1px -1px;
+  background: #0175b1
+    repeating-linear-gradient(
+      135deg,
+      #0175b1,
+      #0175b1 10px,
+      #8fd2f5 10px,
+      #8fd2f5 20px,
+      #0175b1 20px
+    )
+    no-repeat;
+  background-size: 1000% 100%;
+  background-position: 0 0;
 }

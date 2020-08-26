@@ -1,4 +1,4 @@
- const birdsData = [
+const birdsData = [
   [       
     {
       id: 1,
@@ -45,7 +45,7 @@
       name: 'Синица',
       species: 'Parus major',
       description: 'В щебетании синиц различают более 40 различных звуковых сочетаний. Поют они практически круглый год, немного затихая только зимой. Синицы настоящие санитары леса. Одна пара синиц в период гнездования оберегает от вредителей десятки деревьев.',
-      image: 'https://live.staticflickr.com//65535//49366042493_c48c81d58d.jpg',
+      image: 'https://live.staticflickr.com/4547/38668818672_0d8640c48d_k.jpg',
       audio: 'https://www.xeno-canto.org/sounds/uploaded/RFGQDPLDEC/XC518417-Kj%C3%B8ttmeis%20XC%20Helg%C3%B8ya%20Elias%20A.%20Ryberg20200108133922_079.mp3'
     }
   ],
@@ -221,7 +221,7 @@
       name: 'Лунь',
       species: 'Circus cyaneus',
       description: 'Лунь – это небольшой сокол. Питается в основном мышевидными грызунами, основа его рациона – полёвки, хомяки, мыши. Оперение луня может быть пепельно-серым. С такой птицей связано сравнение «седой, как лунь».',
-      image: 'https://live.staticflickr.com/65535/49322743903_32f3922d9e.jpg',
+      image: 'https://live.staticflickr.com/4480/37240531151_b74619c99d.jpg',
       audio: 'https://www.xeno-canto.org/sounds/uploaded/BLMSIUFTFU/XC513498-190709_1175_Cir.cyan-f.mp3'
     },
     {
@@ -279,7 +279,7 @@
       name: 'Пеликан',
       species: 'Pelecanus',
       description: 'Пеликаны — обитатели морей и рек. Ходят они неуклюже, но хорошо летают и плавают. Питаются в основном рыбой, устраивают коллективные охоты — выстроившись полукругом хлопают по воде крыльями и клювами и вытесняют напуганную рыбу на мелководье.',
-      image: 'https://live.staticflickr.com/7885/46523771945_9496c2a191.jpg',
+      image: 'https://live.staticflickr.com/65535/49159147156_dcbbb5c12a.jpg',
       audio: 'https://www.xeno-canto.org/sounds/uploaded/XAMHIHFTZG/XC331138-call1.mp3'
     },
     {

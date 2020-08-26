@@ -1,10 +1,20 @@
 import React from 'react'
 import AudioPlayer from 'react-h5-audio-player'
-import 'react-h5-audio-player/src/styles.scss'
 import {render} from 'react-dom'
 import birds from './data/data'
 import './index.scss'
 import bird_hide_img from './assets/bird_hide.jpg'
+import error from './audio/error.mp3'
+import correct from './audio/correct.mp3'
+import failure from './audio/failure.mp3'
+import success from './audio/success.mp3'
+function audioPlay(music) {
+  let audio = new Audio()
+  audio.preload = 'auto'
+  audio.src = music
+  audio.play()
+}
+
 let listItemNames = [
   'Разминка',
   'Воробьиные',
@@ -21,38 +31,35 @@ function shuffle(array) {
     ;[array[i], array[j]] = [array[j], array[i]]
   }
 }
-shuffle(birds)
+birds.forEach(el=>shuffle(el))
 
 class BirdInfo extends React.Component {
-  returnBirdDescription() {
-    let description = ''
+  returnBirdInf() {
+    let inf = ''
     birds[this.props.page].forEach((el) => {
-      if (el.name === this.props.selectedBird) description = el.description
+      if (el.name === this.props.selectedBird) inf = el
     })
-    return description
-  }
-  returnBirdAudio() {
-    let audio = ''
-    birds[this.props.page].forEach((el) => {
-      if (el.name === this.props.selectedBird) audio = el.audio
-    })
-    return audio
+
+    return inf
   }
   render() {
     return this.props.selectedBird ? (
       <div>
         <span className="bird-name">{this.props.selectedBird}.</span>
+        <hr/>
+        <span>{this.returnBirdInf().species}</span>
         <AudioPlayer
           autoPlay={false}
           customAdditionalControls={[]}
           showJumpControls={false}
-          src={this.returnBirdAudio()}
-          onPlay={(e) => console.log('onPlay')}
+          src={this.returnBirdInf().audio}
+          autoPlayAfterSrcChange={false}
         />
-        <span>{this.returnBirdDescription()}</span>
+        <img src={this.returnBirdInf().image} alt="hide bird" />
+        <p>{this.returnBirdInf().description}</p>
       </div>
     ) : (
-      <span>Послушайте плеер. Выберите птицу из списка</span>
+      <p>Послушайте плеер. Выберите птицу из списка</p>
     )
   }
 }
@@ -75,19 +82,19 @@ class Button extends React.Component {
 }
 
 class GameBoard extends React.Component {
- 
   render() {
     return (
       <div className="game-board">
         <div className="birds-player">
           <img src={this.props.birdImg} alt="hide bird" />
-          <div>
-            <span>{this.props.birdName}</span>
+          <div className="birds-player-controls">
+            <p className='name'>{this.props.birdName}</p>
+            <hr/>
             <AudioPlayer
               customAdditionalControls={[]}
               showJumpControls={false}
               src={this.props.birdAudio}
-              onPlay={(e) => console.log('onPlay')}
+              autoPlayAfterSrcChange={false}
             />
           </div>
         </div>
@@ -119,11 +126,33 @@ class BirdsName extends React.Component {
   render() {
     return (
       <li>
-        <span>{this.props.data.name}</span>
+        <span className="li-btn"></span><span>{this.props.data.name}</span>
+        <hr />
       </li>
     )
   }
 }
+function ShowMessage({show, score}) {
+  let message = ''
+  if (score === 30 && show) {
+    audioPlay(success)
+    message = 'Молодец ты отлично справился ты набрал максимальный бал !'
+  } else {
+    if (show) audioPlay(failure)
+    message = `Ты набрал ${score} из 30, попробуй ещё раз!`
+  }
+  return show ? (
+    <>
+      <div className="message">
+        <p>{message}</p>
+        {}
+      </div>
+    </>
+  ) : (
+    <></>
+  )
+}
+
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -143,6 +172,7 @@ class App extends React.Component {
         birds[5][Math.floor(1 + Math.random() * 6) - 1],
       ],
       answer: false,
+      message: false,
     }
   }
 
@@ -167,22 +197,29 @@ class App extends React.Component {
     event.persist()
     if (event.target.localName === 'span') {
       this.setState({selectedBird: event.target.innerText})
-      event.target.classList.add('active')
+
       if (
         event.target.innerText === this.state.answers[this.state.page].name &&
         !this.state.answer
-      )
+      ) {
         this.setState((state) => ({
           score: state.score + state.points,
           answer: true,
           birdName: event.target.innerText,
           birdImg: state.answers[state.page].image,
         }))
-      else this.setState((state) => ({points: state.points - 1}))
+        console.log(event);
+        event.target.previousSibling.classList.add('true')
+        audioPlay(correct)
+      } else {
+        if (!this.state.answer) audioPlay(error)
+        this.setState((state) => ({points: state.points - 1}))
+        if (!this.state.answer) event.target.previousSibling.classList.add('false')
+      }
     }
   }
   gameEnd() {
-    alert('daw')
+    this.setState(() => ({message: true}))
     setTimeout(() => {
       window.location.reload()
     }, 3000)
@@ -197,6 +234,7 @@ class App extends React.Component {
           </div>
           <ListItem page={this.state.page} />
         </header>
+        <ShowMessage show={this.state.message} score={this.state.score} />
         <GameBoard
           page={this.state.page}
           birdImg={this.state.birdImg}
