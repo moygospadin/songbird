@@ -31,7 +31,7 @@ function shuffle(array) {
     ;[array[i], array[j]] = [array[j], array[i]]
   }
 }
-birds.forEach(el=>shuffle(el))
+birds.forEach((el) => shuffle(el))
 
 class BirdInfo extends React.Component {
   returnBirdInf() {
@@ -46,7 +46,7 @@ class BirdInfo extends React.Component {
     return this.props.selectedBird ? (
       <div>
         <span className="bird-name">{this.props.selectedBird}.</span>
-        <hr/>
+        <hr />
         <span>{this.returnBirdInf().species}</span>
         <AudioPlayer
           autoPlay={false}
@@ -88,13 +88,22 @@ class GameBoard extends React.Component {
         <div className="birds-player">
           <img src={this.props.birdImg} alt="hide bird" />
           <div className="birds-player-controls">
-            <p className='name'>{this.props.birdName}</p>
-            <hr/>
+            <p className="name">{this.props.birdName}</p>
+            <hr />
             <AudioPlayer
               customAdditionalControls={[]}
               showJumpControls={false}
               src={this.props.birdAudio}
               autoPlayAfterSrcChange={false}
+              onListen={(e) => {
+                if (
+                  this.props.birdName !== '**********' &&
+                  !this.props.musicPaused
+                ) {
+                  e.target.pause()
+                  this.props.musicIsPause()
+                }
+              }}
             />
           </div>
         </div>
@@ -126,7 +135,8 @@ class BirdsName extends React.Component {
   render() {
     return (
       <li>
-        <span className="li-btn"></span><span>{this.props.data.name}</span>
+        <span className="li-btn"></span>
+        <span>{this.props.data.name}</span>
         <hr />
       </li>
     )
@@ -173,9 +183,12 @@ class App extends React.Component {
       ],
       answer: false,
       message: false,
+      musicPaused: false,
     }
   }
-
+  musicIsPause() {
+    this.setState(() => ({musicPaused: true}))
+  }
   createBirdsInfo() {
     console.log(this.state.answers[this.state.page].name)
     return birds[this.state.page].map((el) => (
@@ -191,6 +204,7 @@ class App extends React.Component {
         points: 5,
         birdName: '**********',
         birdImg: bird_hide_img,
+        musicPaused:false,
       }))
   }
   liClick(event) {
@@ -208,13 +222,13 @@ class App extends React.Component {
           birdName: event.target.innerText,
           birdImg: state.answers[state.page].image,
         }))
-        console.log(event);
         event.target.previousSibling.classList.add('true')
         audioPlay(correct)
       } else {
         if (!this.state.answer) audioPlay(error)
         this.setState((state) => ({points: state.points - 1}))
-        if (!this.state.answer) event.target.previousSibling.classList.add('false')
+        if (!this.state.answer)
+          event.target.previousSibling.classList.add('false')
       }
     }
   }
@@ -236,6 +250,8 @@ class App extends React.Component {
         </header>
         <ShowMessage show={this.state.message} score={this.state.score} />
         <GameBoard
+          musicPaused={this.state.musicPaused}
+          musicIsPause={() => this.musicIsPause()}
           page={this.state.page}
           birdImg={this.state.birdImg}
           birdName={this.state.birdName}
