@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import AudioPlayer from 'react-h5-audio-player'
 import {render} from 'react-dom'
 import birds from './data/data'
@@ -81,36 +81,6 @@ class Button extends React.Component {
   }
 }
 
-class GameBoard extends React.Component {
-  render() {
-    return (
-      <div className="game-board">
-        <div className="birds-player">
-          <img src={this.props.birdImg} alt="hide bird" />
-          <div className="birds-player-controls">
-            <p className="name">{this.props.birdName}</p>
-            <hr />
-            <AudioPlayer
-              customAdditionalControls={[]}
-              showJumpControls={false}
-              src={this.props.birdAudio}
-              autoPlayAfterSrcChange={false}
-              onListen={(e) => {
-                if (
-                  this.props.birdName !== '**********' &&
-                  !this.props.musicPaused
-                ) {
-                  e.target.pause()
-                  this.props.musicIsPause()
-                }
-              }}
-            />
-          </div>
-        </div>
-      </div>
-    )
-  }
-}
 class ListItem extends React.Component {
   createListItem() {
     return listItemNames.map((el, index) => (
@@ -183,12 +153,9 @@ class App extends React.Component {
       ],
       answer: false,
       message: false,
-      musicPaused: false,
     }
   }
-  musicIsPause() {
-    this.setState(() => ({musicPaused: true}))
-  }
+
   createBirdsInfo() {
     console.log(this.state.answers[this.state.page].name)
     return birds[this.state.page].map((el) => (
@@ -204,7 +171,6 @@ class App extends React.Component {
         points: 5,
         birdName: '**********',
         birdImg: bird_hide_img,
-        musicPaused:false,
       }))
   }
   liClick(event) {
@@ -250,9 +216,7 @@ class App extends React.Component {
         </header>
         <ShowMessage show={this.state.message} score={this.state.score} />
         <GameBoard
-          musicPaused={this.state.musicPaused}
-          musicIsPause={() => this.musicIsPause()}
-          page={this.state.page}
+          answer={this.state.answer}
           birdImg={this.state.birdImg}
           birdName={this.state.birdName}
           birdAudio={this.state.answers[this.state.page].audio}
@@ -278,5 +242,28 @@ class App extends React.Component {
     )
   }
 }
-
+function GameBoard({answer, birdImg, birdName, birdAudio}) {
+  useEffect(() => {
+    if (answer === true) {
+      document.querySelectorAll('audio').forEach((el) => el.pause())
+    }
+  }, [answer])
+  return (
+    <div className="game-board">
+      <div className="birds-player">
+        <img src={birdImg} alt="hide bird" />
+        <div className="birds-player-controls">
+          <p className="name">{birdName}</p>
+          <hr />
+          <AudioPlayer
+            customAdditionalControls={[]}
+            showJumpControls={false}
+            src={birdAudio}
+            autoPlayAfterSrcChange={false}
+          />
+        </div>
+      </div>
+    </div>
+  )
+}
 render(<App />, document.getElementById('root'))
