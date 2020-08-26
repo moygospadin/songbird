@@ -105,7 +105,7 @@ class BirdsName extends React.Component {
   render() {
     return (
       <li>
-        <span className="li-btn"></span>
+        <p className="li-btn"></p>
         <span>{this.props.data.name}</span>
         <hr />
       </li>
@@ -175,6 +175,7 @@ class App extends React.Component {
   }
   liClick(event) {
     event.persist()
+    console.log(event);
     if (event.target.localName === 'span') {
       this.setState({selectedBird: event.target.innerText})
 
