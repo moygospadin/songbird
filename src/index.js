@@ -175,7 +175,6 @@ class App extends React.Component {
   }
   liClick(event) {
     event.persist()
-    console.log(event);
     if (event.target.localName === 'span') {
       this.setState({selectedBird: event.target.innerText})
 
@@ -191,11 +190,14 @@ class App extends React.Component {
         }))
         event.target.previousSibling.classList.add('true')
         audioPlay(correct)
+        event.target.classList.add('checked')
       } else {
-        if (!this.state.answer) audioPlay(error)
-        this.setState((state) => ({points: state.points - 1}))
-        if (!this.state.answer)
+        if (!this.state.answer && event.target.className !== 'checked') {
+          audioPlay(error)
+          this.setState((state) => ({points: state.points - 1}))
           event.target.previousSibling.classList.add('false')
+          event.target.classList.add('checked')
+        }
       }
     }
   }
