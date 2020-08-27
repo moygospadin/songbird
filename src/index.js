@@ -105,7 +105,7 @@ class BirdsName extends React.Component {
   render() {
     return (
       <li>
-        <span className="li-btn"></span>
+        <p className="li-btn"></p>
         <span>{this.props.data.name}</span>
         <hr />
       </li>
@@ -190,11 +190,14 @@ class App extends React.Component {
         }))
         event.target.previousSibling.classList.add('true')
         audioPlay(correct)
+        event.target.classList.add('checked')
       } else {
-        if (!this.state.answer) audioPlay(error)
-        this.setState((state) => ({points: state.points - 1}))
-        if (!this.state.answer)
+        if (!this.state.answer && event.target.className !== 'checked') {
+          audioPlay(error)
+          this.setState((state) => ({points: state.points - 1}))
           event.target.previousSibling.classList.add('false')
+          event.target.classList.add('checked')
+        }
       }
     }
   }

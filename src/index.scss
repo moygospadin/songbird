@@ -204,6 +204,7 @@ audio {
   -webkit-transition: 0.1s;
   transition: 0.1s;
   background-color: #444;
+  cursor: auto !important;
 }
 @media screen and (max-width: 833px) {
   .birds-player-controls .name {
